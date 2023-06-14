@@ -7,7 +7,7 @@ let menu = [
     { id: 6, nombre: "Papas fritas", categoría: "extra", precio: 2000, descripcion: "Papas fritas con crema, queso cheddar y verdeo" },
 ]
 
-let mensaje = "Ingrese la opción deseada:\n1. Ver menú\n2. Agregar a mi pedido\n3. Filtrar\n4. Ver mi pedido\n5. Finalizar mi compra"
+let mensaje = "Ingrese la opción deseada:\n1. Ver menú\n2. Agregar a mi pedido\n3. Filtrar\n4. Ver mi pedido\n5. Finalizar mi compra\n0. Salir"
 let opcion = Number(prompt("Bienvenido a Hamburguesería ε\n" + mensaje))
 let pedido = []
 
@@ -33,74 +33,79 @@ function mostrarSubTotal(array) {
     return lista
 }
 
-
-while ((opcion < 5) || (opcion !== isNaN)) {
-    switch (opcion) {
-        case 1:
-            alert("Nuestro menú:" + mostrar(menu))
-            break;
-        case 2:
-            let seleccion = Number(prompt("Ingrese el id de la opción que quiere agregar a su pedido" + mostrarSinDescripcion(menu)))
-            let hamburguesaBuscada = menu.find((hamburguesa) => hamburguesa.id === seleccion)
-            let posicionHamburguesaBuscada = pedido.findIndex((hamburguesa) => hamburguesa.id === hamburguesaBuscada.id)
-            if (pedido.find((hamburguesa) => hamburguesa.id === hamburguesaBuscada.id)) {
-                pedido[posicionHamburguesaBuscada].unidades++
-            } else {
-                pedido.push({
-                    id: hamburguesaBuscada.id,
-                    nombre: hamburguesaBuscada.nombre,
-                    precio: hamburguesaBuscada.precio,
-                    unidades: 1,
-                    categoría: hamburguesaBuscada.categoría,
-                })
-            }
-            break;
-        case 3:
-            let filtro = (prompt("Ingrese por tipo de hamburguesa a filtrar: simples, dobles o triples")).toLowerCase()
-            let hamburguesasFiltradas = (menu.filter((hamburguesa) => hamburguesa.categoría === filtro))
-            alert("Nuestras hamburguesas " + filtro + " son: " + mostrar(hamburguesasFiltradas))
-            break;
-        case 4:
-            let subTotal = pedido.reduce((acum, hamburguesa) => acum + (hamburguesa.precio * hamburguesa.unidades), 0)
-            alert("Su pedido hasta el momento es:" + mostrarSubTotal(pedido) + "\n" + "Subtotal: " + subTotal + "$")
-            break;
-        case 5:
-            if (pedido.length > 0) {
-                if (pedido.find((papas) => papas.categoría === "extra")) {
-                    alert("Gracias por su compra\nEl detalle de su pedido es:" + mostrarSubTotal(pedido) + "\nDebe abonar " + pedido.reduce((acum, hamburguesa) => acum + (hamburguesa.precio * hamburguesa.unidades), 0) + "$\nSu pedido llegará en 30 min")
+while (opcion !== 0) {
+    if (opcion < 6) {
+        switch (opcion) {
+            case 1:
+                alert("Nuestro menú:" + mostrar(menu))
+                break;
+            case 2:
+                let seleccion = Number(prompt("Ingrese el id de la opción que quiere agregar a su pedido" + mostrarSinDescripcion(menu)))
+                let hamburguesaBuscada = menu.find((hamburguesa) => hamburguesa.id === seleccion)
+                let posicionHamburguesaBuscada = pedido.findIndex((hamburguesa) => hamburguesa.id === hamburguesaBuscada.id)
+                if (pedido.find((hamburguesa) => hamburguesa.id === hamburguesaBuscada.id)) {
+                    pedido[posicionHamburguesaBuscada].unidades++
                 } else {
-                    let agregarPapas = (prompt("No ha agregado papas a su pedido. Desea agregar para completar el combo? (SI o NO)")).toLowerCase()
-                    if (agregarPapas === "si") {
-                        pedido.push({
-                            id: 6,
-                            nombre: "Papas fritas",
-                            precio: 2000,
-                            unidades: 1,
-                            categoría: "extra"
-                        })
-                        alert("Gracias por su compra\nEl detalle de su pedido es:" + mostrarSubTotal(pedido) + "\nDebe abonar " + pedido.reduce((acum, hamburguesa) => acum + (hamburguesa.precio * hamburguesa.unidades), 0) + "$\nSu pedido llegará en 30 min")
-                    } else {
-                        alert("Gracias por su compra\nEl detalle de su pedido es:" + mostrarSubTotal(pedido) + "\nDebe abonar " + pedido.reduce((acum, hamburguesa) => acum + (hamburguesa.precio * hamburguesa.unidades), 0) + "$\nSu pedido llegará en 30 min")
-                    }
+                    pedido.push({
+                        id: hamburguesaBuscada.id,
+                        nombre: hamburguesaBuscada.nombre,
+                        precio: hamburguesaBuscada.precio,
+                        unidades: 1,
+                        categoría: hamburguesaBuscada.categoría,
+                    })
                 }
-
-            } else {
-                alert("No ha agregado ningún ítem al pedido. Intente nuevamente")
-            }
-            break;
-    }
-    opcion = Number(prompt(mensaje))
+                break;
+            case 3:
+                let filtro = (prompt("Ingrese por tipo de hamburguesa a filtrar: simples, dobles o triples")).toLowerCase()
+                let hamburguesasFiltradas = (menu.filter((hamburguesa) => hamburguesa.categoría === filtro))
+                alert("Nuestras hamburguesas " + filtro + " son: " + mostrar(hamburguesasFiltradas))
+                break;
+            case 4:
+                if (pedido.length > 0) {
+                    let subTotal = pedido.reduce((acum, hamburguesa) => acum + (hamburguesa.precio * hamburguesa.unidades), 0)
+                    alert("Su pedido hasta el momento es:" + mostrarSubTotal(pedido) + "\n" + "Subtotal: " + subTotal + "$")
+                } else {
+                    alert("No ha agregado ningún ítem al pedido. Intente nuevamente")
+                }
+                break;
+            case 5:
+                if (pedido.length > 0) {
+                    if (pedido.find((papas) => papas.categoría === "extra")) {
+                    } else {
+                        let agregarPapas = (prompt("No ha agregado papas a su pedido. Desea agregarlas para completar el combo? (SI o NO)")).toLowerCase()
+                        if (agregarPapas === "si") {
+                            pedido.push({
+                                id: 6,
+                                nombre: "Papas fritas",
+                                precio: 2000,
+                                unidades: 1,
+                                categoría: "extra"
+                            })    
+                        } else {
+                        }
+                    }
+                    alert("Gracias por su compra\nEl detalle de su pedido es:" + mostrarSubTotal(pedido) + "\nDebe abonar " + (pedido.reduce((acum, hamburguesa) => acum + (hamburguesa.precio * hamburguesa.unidades), 0) + "$\nSu pedido llegará en 30 min"))
+                    pedido = []
+                }
+                else {
+                    alert("No ha agregado ningún ítem al pedido. Intente nuevamente")
+                }
+                break;
+        }
+        opcion = Number(prompt(mensaje))
+    } else {
+        opcion=Number(prompt("Opción incorrecta!\nVuelva a intentar\n" + mensaje))
+    }    
 }
-opcion = Number(prompt("Opción incorrecta. Vuelva a intentar" + mensaje))
+alert("Gracias por visitarnos!")
 
 
 
 
 
 
-//acá agregar la validación de que si no se encuentra la categoría extra pregunte si quiere papas, con un find
-//agregar resta de stock o algo por el estilo
-//validar si eligen opción incorrecta o ponen cancelar o escape
-//poner el reduce en una función
+
+
+
 
 
