@@ -72,7 +72,7 @@ while (opcion !== 0) {
                 if (pedido.length > 0) {
                     if (pedido.find((papas) => papas.categoría === "extra")) {
                     } else {
-                        let agregarPapas = (prompt("No ha agregado papas a su pedido. Desea agregarlas para completar el combo? (SI o NO)")).toLowerCase()
+                        let agregarPapas = (prompt("No ha agregado papas a su pedido. Desea agregarlas para completar el combo? (Ingrese si o no)")).toLowerCase()
                         if (agregarPapas === "si") {
                             pedido.push({
                                 id: 6,
